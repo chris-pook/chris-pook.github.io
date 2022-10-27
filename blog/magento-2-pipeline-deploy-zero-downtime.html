@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="A step by step guide to deploying Magento to multiple servers with Pipeline deploy for minimal
+          downtime using DeployHQ"/>
+    <meta name="keywords" content="Magento deploy pipeline minimal zero downtime multiple server deployHQ"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title"
+          content="Magento multi server Pipeline deploy with minimal downtime // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>Magento multi server Pipeline deploy with minimal downtime // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">Magento Pipeline deploy to multi servers with minimal
+                    downtime</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">Setup Magento Pipeline deploy to perform fast, minimal downtime
+                    deploys to multiple servers</h3>
+                <p class="is-italic sp-top10">- Chris Pook, 03rd February 2020</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">The problem</h2>
+                <p>
+                    A common gripe we hear about Magento is the deployment strategy. The need for a significant
+                    site outage during deployment of even a small front-end change is a real weakness. A modern web
+                    application should really be architected to allow for zero (or at least minimal) downtime deployments.
+                </p>
+                <p>
+                    This downtime is due to the steps required to prepare changes in the Magento file system
+                    for release on a production environment. Each new deployment requires that the newly updated
+                    dependencies get installed, the database be updated,
+                    the DI be compiled, the autoload dumped and all static assets be re-published. Each of these steps
+                    takes precious time, highlighted by the process being book-ended by enabling/disabling the
+                    maintenance page, taking the site offline.
+                </p>
+                <p>
+                    Thankfully this is something Magento are aware of and have been working on to improve. Since the
+                    2.2.x release it has been possible to use Magento's "Pipeline" deployment strategy to reduce the time
+                    the site needs to be offline during deployments. Unfortunately the documentation for this process is
+                    not great (link below).
+                </p>
+                <p>
+                    <a href="https://devdocs.magento.com/guides/v2.3/config-guide/deployment/" target="_blank" rel="noreferrer">
+                        https://devdocs.magento.com/guides/v2.3/config-guide/deployment
+                    </a>
+                </p>
+                <p>
+                    The main problem here is that there is a lot of information but not a lot of logical structure.
+                    Pretty much everything you need to know is in there, however the information doesn't flow well and
+                    it is not clear how to actually implement a best practise Pipeline deployment.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">How we solve the problem</h2>
+                <p>
+                    At Absolute Commerce we have years of experience when it comes to Magento and deploying sites in to
+                    production. We strive to make the deployment process as simple as possible whilst providing the
+                    smoothest experience possible for users of the site.
+                </p>
+                <p>
+                    What follows is a common setup we use to deploy Magento to multiple servers using the Pipeline
+                    deployment strategy, reducing the amount of downtime required during each deploy to almost zero.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h4 class="hs1 fontalt4 lp5 text-center">Magento Configuration Dump</h4>
+                <p>
+                    One of the biggest points of confusion in the Pipeline documentation is around dumping the Magento
+                    configuration to make it available for the deployment steps. We have found that many people fall at
+                    the first hurdle due to the vague reasoning and instruction on how to achieve this.
+                </p>
+                <p>
+                    The reason for dumping the config is to copy information that is usually stored only in the Magento
+                    database into a config file. Doing this removes the dependency of Magento on its database to retrieve the
+                    information, allowing building of the deployment separately without needing the currently live files
+                    or database. With the information dumped out to the <i>app/etc/config.php</i> file there's no reliance on
+                    having an <i>app/etc/env.php</i> file to be able to access the database at all.
+                </p>
+                <p>
+                    What is not clear from the documentation is which information needs to be dumped and
+                    what can be left to remain in the database alone. In short the configuration dump step is necessary
+                    for Pipeline deployments but not to the extent that the documentation makes out. If you try to
+                    run the Magento deploy commands with no dumped config and without an <i>app/etc/env.php</i> file present
+                    you'll hit database access errors.
+                </p>
+                <p>
+                    The only information required to be dumped to file is that which is a dependency of the deployment
+                    steps to be run. This is in fact only a very small amount of information (currently only the configuration of
+                    the stores setup). To dump this information in to the site's <i>app/etc/config.php</i> file use the following
+                    command:
+                </p>
+                <p>
+                    <pre>bin/magento app:config:dump scopes</pre>
+                </p>
+                <p>
+                    We always recommend storing the <i>app/etc/config.php</i> file in your Magento project's version control,
+                    so the dumped information can be committed in for use during subsequent deployments.
+                </p>
+                <p>
+                    You may find that you do need additional configuration to be stored in the dump, if it is required by the
+                    deployment process. In this case you can use the command below. Note this will dump the entire core
+                    config data of the site into the <i>app/etc/config.php</i> file, so you'll want to trim the array down
+                    to just the elements you wanted before committing it.
+                </p>
+                <p>
+                    <pre>bin/magento app:config:dump system</pre>
+                </p>
+                <p>
+                    The site's js/css minification configuration is a good example of something you might want to
+                    include, so that your live deploys minify the files as expected.
+                </p>
+                <p>
+                    If you prefer to keep this information out of your version control and make it environment dependant you
+                    might consider using environment variables to override configuration settings as per this link:
+                </p>
+                <p>
+                    <a href="https://devdocs.magento.com/guides/v2.3/config-guide/prod/config-reference-var-name.html" target="_blank" rel="noreferrer">
+                        https://devdocs.magento.com/guides/v2.3/config-guide/prod/config-reference-var-name.html
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h4 class="hs1 fontalt4 lp5 text-center">Deploy HQ</h4>
+                <div class="text-center">
+                    <a href="https://www.deployhq.com/r/9uckxj" target="_blank" rel="noreferrer">
+                        <img class="sp-top-bottom10" src="/images/blog/deploy-hq.png" alt="DeployHq progress bar"/>
+                    </a>
+                </div>
+                <p>
+                    DeployHQ is one of many great CI tools out there that allows you to program in custom deployment
+                    steps to run on your servers, pulling code in to place and running relevant install commands.
+                    We have used DeployHQ in this example as it is one of the easiest to use and offers a free tier so you
+                    can have a dabble with no commitment.
+                </p>
+                <p>
+                    <a href="https://www.deployhq.com/r/9uckxj" target="_blank" rel="noreferrer">
+                        Click here to sign up for a free DeployHQ account to try out Magento Pipeline deployment
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h4 class="hs1 fontalt4 lp5 text-center">Deploy HQ - Server Configuration</h4>
+                <p>
+                    Within DeployHQ you can specify the servers you want to deploy to and grant access to them for
+                    DeployHQ to make changes. In this example we are using two separate servers to demonstrate the
+                    multi server element of the Pipeline deploy.
+                </p>
+                <p>
+                    DeployHQ allows you to use 'Server Groups' to group your servers together and specify the 'Server
+                    Transfer Order'. For Magento Pipeline deployment to multiple servers, create a new
+                    server group and select the <i>Parallel</i> Transfer Order option.
+                </p>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-narrow box sm-bottom20">
+                <img src="/images/blog/deploy-hq-parallel.png" alt="DeployHq server list parallel"/>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    This means that on each deployment the steps of the deploy will be carried out on each server in the
+                    group one by one before moving on to the next step of the deploy. You can also specify certain steps
+                    to only run on certain servers, more on this later.
+                </p>
+                <div class="text-center">
+                    <img class="box sm-bottom20" src="/images/blog/deploy-hq-servers.png" alt="DeployHq servers list"/>
+                </div>
+                <p>
+                    Each server is configured to allow SSH access to DeployHQ using a keypair (generated by DeployHQ). You'll
+                    need to provision access to the server using the public key provided, adding it to the
+                    <i>~/.ssh/authorized_keys</i> file of the relevant user (the owner of the files to be deployed) on the server.
+                    Don't forget you'll also need to whitelist the DeployHQ IPs to access the server on your SSH port.
+                </p>
+                <p>
+                    Make sure to tick the "Perform zero-downtime deployments" check box when setting up each server.
+                    This is the key to performing the Magento deployment steps in the required order to reduce downtime.
+                </p>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-narrow box sm-bottom20">
+                <img src="/images/blog/deploy-hq-zero-downtime.png" alt="DeployHQ zero downtime check box"/>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    The zero downtime element of the deployment is implemented on your servers using a symlink to point
+                    the webroot of your site to a particular release directory. Each new deployment creates a new
+                    release directory and during a deployment the symlink is updated to point to the newly deployed
+                    code rather than the old code.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h4 class="hs1 fontalt4 lp5 text-center">Deploy HQ - SSH Command Configuration</h4>
+                <p>
+                    Once the servers are all configured the next step is to configure the SSH commands that will be run on them
+                    each time you kick off a deploy. This is setup in the "SSH Commands" section of the DeployHQ account.
+                    Each step of the Magento deploy can be broken down in to its individual commands here. On each deployment
+                    the files from the specified branch or commit of the deploy are copied to the server and then each of these
+                    steps is then run.
+                </p>
+                <p>
+                    Within each SSH command DeployHQ provides variables which are substituted in for the relevant value
+                    during a deployment. The key variable used here is <i>%release_path%</i>. This allows the deploy step to
+                    reference the new release directory created for the current run of the deployment. The example
+                    below shows how this would be used to enable maintenance mode in the current release directory.
+                </p>
+                <div class="text-center">
+                    <img class="box sm-bottom20" src="/images/blog/deploy-hq-ssh-command.png" alt="DeployHQ SSH command example"/>
+                </div>
+                <p>
+                    With DeployHQ zero-downtime the SSH commands you define can be run either <i>before</i> the current
+                    release symlink is switched, or <i>after</i>. With this in mind you'll need the following configuration.
+                </p>
+                <p>
+                    Before the release symlink is switched over, you'll want your Composer dependencies installed,
+                    DI compiled, autoload dumped and static content deployed. All of these steps can happen 'offline' in containment
+                    of the release directory before the symlink switch, meaning the site is still up and live whilst this is
+                    happening. In a true CI setup these steps should really happen elsewhere and the result just be retrieved
+                    here as an artifact to use for the deployment. For the sake of clarity we're using DeployHQ for everything
+                    in this example:
+                </p>
+                <div class="text-center">
+                    <img class="box sm-bottom20" src="/images/blog/deploy-hq-before-link.png" alt="DeployHQ Magento pipeline deploy SSH commands before link"/>
+                </div>
+                <p>At this point the release is all built and ready to go, you just need to switch it in for the currently live release.</p>
+                <p>
+                    After the release symlink is switched over the live site will be operating on the newly deployed
+                    files. However, until now the database has not yet been updated with any changes introduced, so now the
+                    maintenance page needs to go up whilst the <i>setup:upgrade</i> command runs. You can get clever here and only run setup:upgrade if required, meaning no maintenance page at all on some deploys.
+                </p>
+                <p>
+                    Remember as it is configured in <i>Parallel</i> mode, DeployHQ will complete each step of the deploy on all of the servers specified before moving
+                    on, so the maintenance page will go up on each server before the <i>setup:upgrade</i> command is run.
+                    Similarly the maintenance page will not come off until the <i>setup:upgrade</i> command has run on all of
+                    the servers specified. In the configuration of the <i>setup:upgrade</i> SSH command it is important to set
+                    it to run only on one server rather that "All Servers", as the database is shared by all of the
+                    servers and only needs to be updated once.
+                </p>
+                <div class="text-center">
+                    <img class="box sm-bottom20" src="/images/blog/deploy-hq-after-changes.png" alt="DeployHQ Magento pipeline deploy SSH commands after change"/>
+                </div>
+                <p>
+                    Note, the <i>--keep-generated</i> parameter must be used here when running <i>setup:upgrade</i> to prevent the
+                    previously generated Magento files being deleted. The length of time this process takes to run depends
+                    entirely on the changes introduced, but usually it will run in under a minute where only regular
+                    schema changes are being made. This is a significant reduction in the time required to have the maintenance page up for.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h4 class="hs1 fontalt4 lp5 text-center">Deploy HQ - Shared Directory</h4>
+                <p>
+                    The final element of the DeployHQ setup is to leverage their "Shared Directory" functionality to
+                    enable each new release directory to link to assets that you want to be available across deploys.
+                    For instance you don't ideally want to duplicate all of your catalog images etc for every single
+                    deployment. Most CI tools offer this type of mechanism to share data across deploys.
+                </p>
+                <p>
+                    Deploy HQ's shared directory works by creating symlinks in the release to any files or directories added to a special <i>shared</i>
+                    directory, added alongside the releases and current symlink on the server. You can read more about
+                    how this works here:
+                </p>
+                <p>
+                    <a href="https://www.deployhq.com/support/faq/zero-downtime-shared-directory" target="_blank" rel="noreferrer">
+                    https://www.deployhq.com/support/faq/zero-downtime-shared-directory</a>
+                </p>
+                <p>
+                    For Magento Pipeline deployment we suggest the following structure for the shared directory. Keeping
+                    the site's env.php, media and logs/reports available across deploys with no need to copy or link files
+                    yourself:
+                </p>
+            </div>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-narrow box sm-bottom20">
+                <img src="/images/blog/deploy-hq-shared.png" alt="DeployHQ Magento pipeline deploy shared directory"/>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Conclusion</h2>
+                <p>
+                    So that's a brief run through of how you can robustly deploy Magento to multiple servers with minimal downtime. Obviously
+                    there are many additional steps that can be added to this brief example to improve the process but
+                    we hope it gives enough insight to the concepts involed in the process to get over the initial hurdles and get under way.
+                </p>
+                <p>
+                    As always should you require assistance with your own Magento deploys or any other aspect of ecommerce,
+                    please don't hesitate to get in touch for a chat with us.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

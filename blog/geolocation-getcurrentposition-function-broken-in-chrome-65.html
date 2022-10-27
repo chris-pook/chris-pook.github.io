@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="A bug has been introduced to the geolocate functionality of the Chrome browser in version 65. This manifests itself in timeouts to all calls to the geolocate getCurrentPosition watchPosition functions."/>
+    <meta name="keywords"
+          content="Geolocation getCurrentPosition watchPosition chrome chrome65 navigator broken not working"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title" content="Geolocation getCurrentPosition function broken in Chrome 65 // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>Geolocation getCurrentPosition function broken in Chrome 65 // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">Geolocation getCurrentPosition function broken in
+                    Chrome 65</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">The reason your geolocate code is no longer working..</h3>
+                <p class="is-italic sp-top10">- Chris Pook, 21st March 2018</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section white-section sp-top-bottom50">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    As of the <a href="https://developers.google.com/web/updates/2018/03/nic65" target="_blank"
+                                 rel="noreferrer">Chrome 65 update</a>
+                    rolled out in March 2018, a bug has been introduced to
+                    the geolocate functionality of the browser. This manifests itself in timeouts to all calls to
+                    navigator.geolocation.getCurrentPosition() and navigator.geolocation.watchPosition().
+                </p>
+                <p>
+                    We came across this bug during development of our <a
+                        href="https://collectinstore.absolutecommerce.co.uk/" target="_blank" rel="noreferrer">Magento
+                    Collect in Store
+                    application</a> which relies on the API to allow users to find collection locations near to them.
+                </p>
+                <p>
+                    As of today we haven't been able to find a work around to the bug. However we suggest that you
+                    handle the situation by ensuring a timeout is set so that the function calls don't disappear in to
+                    a black hole. By setting a 5 second timeout you can gracefully return a message to the user along
+                    the lines of "location services are not available in your browser currently".
+                </p>
+                <pre class="line-numbers box"><code class="language-javascript">if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            // on success this will be called.
+        },
+        function (err) {
+            // on error (including timeout) this function will be called.
+        },
+        {
+            timeout: 5000
+        }
+    );
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

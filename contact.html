@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="Welcome to Absolute Commerce, offering backend development and integration services to retailers and agencies, specialising in the Magento eCommerce platform."/>
+    <meta name="keywords"
+          content="Magento, Magento 2, Development, Integration, Backend, Freelance, Absolute Commerce"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title" content="Contact Us // Absolute Commerce"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>Contact Us // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section is-halfheight hero contact">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="sm-bottom10 fontalt4  hs5">Contact US</h1>
+            <h3 class="hs1 fw300 fontalt4 lp2">Reach out to see what we can do for you today, or just to have a
+                chat!</h3>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <form id="contact-form" autocomplete="off" action="/contact.php" method="post">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label for="name" class="label">Name</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input id="name" name="name" class="input is-focused form-value" type="text" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal is-hidden">
+                        <div class="field-label is-normal">
+                            <label for="other" class="label">Other</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input id="other" name="other" class="input form-value" type="text"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label for="email" class="label">Email</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input id="email" name="email" class="input form-value" type="email" required/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label for="phone" class="label">Phone (optional)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input id="phone" name="phone" class="input form-value" type="tel"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label for="message" class="label">Your message</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea id="message" name="message" class="textarea form-value" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field sp-top20">
+                        <div class="control text-center">
+                            <button id="submit-button" class="btn-bg-black btn-size-1 btn-radius">Submit</button>
+                            <div id="form-message" class="sp-top20"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="columns is-centered">
+                    <div class="column is-6">
+                        <h2 class="sm-bottom10 fontalt4 hs5">Registered Office Address</h2>
+                        <address>
+                            Absolute Commerce Ltd.<br />
+                            First Floor, Telecom House<br />
+                            125-135 Preston Road<br />
+                            BN1 6AF<br />
+                            United Kingdom<br />
+                        </address>
+                        <p class="sp-top10">(for official use only, do not visit or mail this address)</p>
+                    </div>
+                    <div class="column is-6 text-right">
+                        <h6 class="sm-bottom10 fontalt4 hs5">Company No: 10467417</h6>
+                        <h6 class="sm-bottom10 fontalt4 hs5">VAT Registration: 257295474</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+                        Mainyard Studios<br />
+                        35 Bow Rd, London E3 2AD
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+<script>
+    var form = document.getElementById('contact-form');
+    form.addEventListener('submit', function (event) {
+        if (typeof (this.checkValidity) == "function" && this.checkValidity()) {
+            event.preventDefault();
+
+            var formData = new FormData();
+            var elements = this.getElementsByClassName('form-value');
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].name == 'other' && !elements[i].value.length) {
+                    var date = new Date();
+                    var value = btoa(
+                        date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+                    )
+
+                    formData.append(
+                        elements[i].name,
+                        value
+                    );
+                } else {
+                    formData.append(elements[i].name, elements[i].value);
+                }
+            }
+            var xmlHttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4) {
+                    var container = document.getElementById('form-message'),
+                        message;
+                    if (xmlHttp.status == 200) {
+                        message = document.createTextNode('Your message has been sent');
+                        container.classList.add('has-text-success');
+                    } else {
+                        message = document.createTextNode('Message sending failed');
+                        container.classList.add('has-text-danger');
+                    }
+
+                    if (container.childNodes.length) {
+                        container.removeChild(container.childNodes[0]);
+                    }
+                    container.appendChild(message);
+                }
+            }
+
+            xmlHttp.open('post', '/contact.php');
+            xmlHttp.send(formData);
+        }
+    });
+</script>
+</body>
+</html>

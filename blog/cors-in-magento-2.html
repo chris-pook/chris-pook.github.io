@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+
+    <meta charset="utf-8"/>
+    <meta name="description" content="How to solve CORS issues with Magento 2 if you are using a CDN"/>
+    <meta name="keywords" content="CORS, CDN, Magento 2, CloudFront, AWS"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title" content="CORS in Magento 2 // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>CORS in Magento 2 // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">CORS in Magento 2</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">How to configure Nginx to handle CORS requests when hosting Magento2</h3>
+                <p class="is-italic sp-top10">- Chris Pook, 20th February 2019</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    On upgrading our own website to Magento 2.2.x we encountered various console errors due to cross origin (see examples below) which turned out to be due to our use of a CDN on a different domain. We were able to solve this with a tweak to our CDN setup and by adding some new rules to the nginx configuration, detailed below.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="content">
+                <h2 class="hs1 fontalt4 lp5">The error messages</h2>
+                </div>
+
+                <p>
+                    Below is a summary of the errors appearing in the console as a symptom of this new issue:
+                </p>
+
+                <ul class="has-text-danger">
+                    <li>... OPTIONS ... 405 ()</li>
+                    <li>Uncaught SyntaxError: Unexpected end of JSON input</li>
+                    <li>Response for preflight has invalid HTTP status code 405</li>
+                    <li>Request header field x-requested-with is not allowed by Access-Control-Allow-Headers in preflight response.</li>
+                    <li>Failed to load ... Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin ... is therefore not allowed access. The response had HTTP status code 405.</li>
+                    <li>Access to Font at 'xxx' from origin 'xxx' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'xxx' is therefore not allowed access.</li>
+                    <li>Failed to load xxx: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'xxx' is therefore not allowed access.</li>
+                    <li>Failed to load xxx: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'xxx' is therefore not allowed access.</li>
+                    <li>Failed to load xxx: Request header field x-requested-with is not allowed by Access-Control-Allow-Headers in preflight response.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Web Server Configuration</h2>
+
+                <p>
+                    The solution is relatively simple, you just need to add some special handling of cross origin requests and pre-flight OPTIONS requests to your web server configuration to allow the pre-flight requests through.
+                </p>
+                <p>
+                    This will allow all origins to access your resources:
+                </p>
+                <pre class="line-numbers box"><code class="language-nginx"># Note: for 'Access-Control-Allow-Origin' we use '*' instead of 'https://www.your-website.co.uk'
+# to be absolutely sure that these assets can be served to any origin, since we have a mixture of CDN,
+# frontend url and admin url. We want to mitigate the risk of these PUBLIC assets not being served.
+
+add_header 'Access-Control-Allow-Origin' '*' 'always';
+
+if ($request_method = 'OPTIONS') {
+    add_header 'Access-Control-Allow-Origin' '*' 'always';
+    add_header 'Access-Control-Allow-Headers' 'x-requested-with' 'always';
+    add_header 'Access-Control-Max-Age' 86400 'always';
+    add_header 'Content-Length' 0 'always';
+    return 204;
+}</code></pre>
+                <p>
+                This same code needs to be added to each of your location blocks within /static, so we recommend adding this as a new file magento2-cors.conf and using include to prevent duplicating the same rules over and over, eg:
+                </p>
+
+                <pre class="line-numbers box"><code class="language-nginx">location /static/ {
+    location ~* \.(ico|jpg|jpeg|png|gif|svg|js|css|swf|eot|ttf|otf|woff|woff2)$ {
+        add_header X-Frame-Options "SAMEORIGIN";
+        include /etc/nginx/magento2-cors.conf;
+    }
+
+    location ~* \.(zip|gz|gzip|bz2|csv|xml)$ {
+        add_header X-Frame-Options "SAMEORIGIN";
+        include /etc/nginx/magento2-cors.conf;
+    }
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    include /etc/nginx/magento2-cors.conf;
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">CDN Configuration</h2>
+                <p>
+                    Also ensure your CDN is configured to allow OPTIONS requests through and to be cached, as by default CDN may only allow GET and POST.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">We're here to help!</h2>
+                <p>
+                    As always if you need some assistance or would like us to do this for you, please please get in touch.
+                </p>
+                <p>
+                    For more information on setting up AWS CloudFront CDN with your Magento website, <a href="/blog/magento2-aws-cloudfront-cdn">please see our tutorial here</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

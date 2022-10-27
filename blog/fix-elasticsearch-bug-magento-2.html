@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="Details of, and how to patch fix the Magento2.3.3 Elasticearch pagination bug"/>
+    <meta name="keywords" content="SSL letsencrypt certbot apache plugin https certificate"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title"
+          content="How to patch fix critical Elasticsearch bug in Magento 2.3.3 release // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>How to patch fix critical Elasticsearch bug in Magento 2.3.3 release // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">
+                    How to patch the critical ElasticSearch bug in the latest Magento 2.3.3 release
+                </h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">
+                    With the latest Magento 2.3.3 version release comes a critical ElasticSearch bug, pagination is
+                    completely broken when using the recommended ElasticSearch engine instead of MySQL (which is now
+                    deprecated). Read on to see how to fix this issue with the emergency patch Magento have released.
+                </h3>
+                <p class="is-italic sp-top10">- Chris Pook, 12th October 2019</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered is-vcentered">
+            <div class="column is-8">
+                <p>
+                    This is a frustrating issue. In what should have been a security fixes release we have a major
+                    breaking change which has slipped through all testing and also doesn't appear to be related to a
+                    security fix.
+                </p>
+                <p>
+                    With ElasticSearch enabled as the search backend in Magento admin, clicking beyond the first page of
+                    search results will give you a "no products found" message on the front-end.
+                </p>
+                <img class="sp-top-bottom20" alt="Elasticsearch pagination broken in Magento 2.3.3"
+                     src="/images/blog/elasticsearch-pagination-broken-in-magento.png">
+                <p>
+                    Magento have released an emergency hotfix patch (see below) to address this, which we delve in to
+                    below and show you how to cleanly apply it as part of your Composer workflow.
+                </p>
+                <p>
+                    <a href="https://magento.com/tech-resources/download#download2331"
+                       target="_blank" rel="noreferrer">https://magento.com/tech-resources/download#download2331</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Prepare the patch file</h2>
+                <p>
+                    To cleanly apply the patch using Composer you'll first need to add the patch file to your repository. We
+                    suggest adding the file to the root of the repo, in a "patches" directory. Save the file with a relevant
+                    name and a ".patch" extension. For example "patches/elasticsearch-pagination.patch".
+                </p>
+                <p>
+                    Once you have done this, you'll likely need to modify the patch file. Due to the way Magento keep their
+                    core codebase in one single GitHub repository and then split it out to separate repos for people to
+                    install via Composer, you will need to modify the file paths in the patch file. You will need to change
+                    all of the file path's in the patch to be relevant to the affected module's directory. Essentially
+                    removing <span class="fw200">app/code/&lt;vendor&gt;/&lt;package&gt;</span> or <span class="fw200">
+                    vendor/&lt;vendor&gt;/&lt;package&gt;</span> from the file.
+                </p>
+                <p>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Applying the patch with Composer</h2>
+                <p>
+                    Installing Magento via Composer is the best-practise method advocated by Absolute Commerce, so lets
+                    cover that off first. Obviously you can't just apply the patch to the core code you have in the
+                    vendor directory as this is not checked in to version control.
+                </p>
+                <p>
+                    What you need is to have Composer record that a patch has been applied and therefore to apply that
+                    same patch on all subsequent installs of the code. The application of patches is not something Composer
+                    does out of the box, however there is a useful add-on that does facilitate this.
+                </p>
+                <p>
+                    To install the add-on run the following in your Magento root directory:
+                </p>
+                <pre class="box"><code class="language-bash">composer require cweagans/composer-patches</code></pre>
+                <p>
+                    Composer will now download and add the add-on to your build, updating the composer.lock file in
+                    doing so. Next you can move on to actually applying the patch. Update the the "extra" node
+                    of the composer.json file to look as follows
+                </p>
+                <pre class="box"><code class="language-json">"extra": {
+    "magento-force": "override",
+    "patches": {
+        "magento/module-elasticsearch": {
+            "Elasticsearch pagination bug 2.3.3": "patches/elasticsearch-pagination.patch"
+        }
+    }
+}</code></pre>
+                <p>
+                    Now running a composer update as normal will remove the standard magento/module-elasticsearch
+                    dependency, re-install it and apply the supplied patch. You should see the following output:
+                </p>
+                <pre class="box"><code>$ composer update
+Gathering patches for root package.
+Removing package magento/module-elasticsearch so that it can be re-installed and re-patched.
+  - Removing magento/module-elasticsearch (100.3.3)
+Gathering patches for root package.
+Gathering patches for dependencies. This might take a minute.
+  - Installing magento/module-elasticsearch (100.3.3): Loading from cache
+  - Applying patches for magento/module-elasticsearch
+    patches/elasticsearch-pagination.patch (Elasticsearch Pagination bug 2.3.3)
+Writing lock file
+Generating autoload files</code></pre>
+                <p>
+                    The final step then is to commit everything, don't forget to add the new patches directory, the composer.json
+                    file and the composer.lock file.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Applying the patch on command line</h2>
+                <p>
+                    If you're not using Composer to install your site, or you need to make a very quick hotfix to a live
+                    site before your next deployment, you can apply the patch directly.
+                </p>
+                <p>
+                    First copy the patch file to your Magento root directory. As with the Composer method above you will
+                    need to modify the patch file contents to make all file paths relevant to the location of the files in your
+                    Magento codebase. If you are using Composer use the vendor/ path, otherwise use the app/code path.
+                </p>
+                <p>
+                    With the file in place and the file paths corrected you can now run the following command to apply
+                    the patch:
+                </p>
+                <pre class="box"><code class="language-bash">patch < elasticsearch-pagination.patch</code></pre>
+                <p>
+                    The patch will now either be applied, or you'll be met with a <span class="fw300">File to patch:</span>
+                    prompt. In this case, enter the file path of the relevant file which it is listing (you can copy and paste)
+                    the patch from the output in to the prompt.
+                </p>
+                <p>
+                    This should result in the following output:
+                </p>
+                <pre class="box"><code class="">$ patch < elasticsearch-pagination.patch
+can't find file to patch at input line 5
+Perhaps you should have used the -p or --strip option?
+The text leading up to this was:
+--------------------------
+|diff --git a/vendor/magento/module-elasticsearch/Model/ResourceModel/Fulltext/Collection/SearchResultApplier.php b/vendor/magento/module-elasticsearch/Model/ResourceModel/Fulltext/Collection/SearchResultApplier.php
+|index b15d99dcc2d..3ae2d384782 100644
+|--- a/vendor/magento/module-elasticsearch/Model/ResourceModel/Fulltext/Collection/SearchResultApplier.php
+|+++ b/vendor/magento/module-elasticsearch/Model/ResourceModel/Fulltext/Collection/SearchResultApplier.php
+--------------------------
+File to patch: vendor/magento/module-elasticsearch/Model/ResourceModel/Fulltext/Collection/SearchResultApplier.php
+patching file vendor/magento/module-elasticsearch/Model/ResourceModel/Fulltext/Collection/SearchResultApplier.php</code></pre>
+                <p>
+                    If you need to you can now commit the file modification in to your repository for subsequent deploys.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                If you're having trouble with this, or any other issue please don't hesitate to <a href="/contact">get in touch</a>!
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

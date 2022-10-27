@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="Step by step guide to enabling and configuring auto renewing LetsEncrypt SSL certificates with Apache and Certbot"/>
+    <meta name="keywords" content="SSL letsencrypt certbot apache plugin https certificate"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title"
+          content="Configure auto renewing LetsEncrypt SSL certificates with Apache // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>Configure auto renewing LetsEncrypt SSL certificates with Apache // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">Configuring auto renewing LetsEncrypt SSL certs
+                    with Apache and Certbot</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">How to configure LetsEncrypt SSL certs to auto renew with Apache</h3>
+                <p class="is-italic sp-top10">- Chris Pook, 09th October 2019</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    Following on from our <a href="/blog/auto-renew-letsencrypt-nginx-certbot">blog post</a> on
+                    configuring auto renewing LetsEncrypt SSL certificates with Nginx, we thought it pertinent to cover
+                    the same setup but for the popular Apache webserver.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Installing the Software</h2>
+
+                <p>
+                    As with the Nginx setup, you'll first want to ensure you have a clean environment before
+                    installing and configuring the Certbot software. If you've previously setup Certbot or had issues
+                    configuring it this step will wipe the slate clean to set you up for the instructions below:
+                </p>
+
+                <pre class="box"><code class="language-bash">sudo apt-get remove letsencrypt
+sudo apt-get remove certbot</code></pre>
+
+                <p>
+                    This software removal will leave your certificate configuration in place so don't worry if you
+                    already had a version installed but couldn't get renewal to work etc. The new version of Certbot
+                    will pick up your old certificates no problem.
+                </p>
+
+                <p>
+                    Next, add the LetsEncrypt software repo and update your system to use it:
+                </p>
+                <pre class="box"><code class="language-bash">sudo apt-get install software-properties-common
+sudo apt-get update</code></pre>
+
+                <p>
+                    Now you can go ahead and install the latest version of certbot:
+                </p>
+                <pre class="box"><code class="language-bash">sudo apt-get install certbot</code></pre>
+
+                <p>
+                    The following step is the one which differs between setting up on Apache and Nginx. Here you will
+                    add the Apache plugin for Certbot, which is used to automate the renewals:
+                </p>
+                <pre class="box"><code class="language-bash">sudo apt-get install python-certbot-apache</code></pre>
+                <p>
+                    Now the software is installed you can begin configuring your sites to use SSL allowing them to
+                    serve content over HTTPS. The newly installed Certbot command will allow you to both generate and
+                    renew certificates at any time.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Generating SSL Certificates For Apache</h2>
+
+                <p>
+                    Certificates are generated based on the Apache vHosts you have setup on your server. As always we
+                    suggest you backup your existing vhosts before starting, as Certbot may modify the contents based on
+                    the options provided. At their most basic you will want to have the following added to each vHost:
+                </p>
+
+                <pre class="line-numbers box"><code class="language-apacheconf">&lt;VirtualHost *:443&gt;
+    ServerName examplesite.com;
+    DocumentRoot /var/www/examplesite.com
+&lt;/VirtualHost&gt;</code></pre>
+
+                <p>
+                    You can now start the Certbot Apache wizard to generate the certificates.
+                </p>
+
+                <pre class="box"><code class="language-bash">sudo certbot --apache</code></pre>
+
+                <p>
+                    You should now be presented with a list of sites detected by the Apache vhost entries:
+                </p>
+
+                <img class="sp-top-bottom10" src="/images/blog/apache-certbot-generate-cert-list.png"
+                     alt="Certbot with Apache plugin generate cert site list"/>
+
+                <p>
+                    Enter the number of each site you'd like to be included in the certificate you are creating, comma
+                    separated.
+                </p>
+                <p>
+                    You will now be given the option to make the site entirely HTTPS secure by forcing a redirect to the
+                    secure URL:
+                </p>
+
+                <img class="sp-top-bottom10" src="/images/blog/apache-certbot-force-ssl.png"
+                     alt="Certbot with Apache plugin force SSL"/>
+
+                <p>
+                    Once you make your selection the vhost will be updated accordingly to use the new certificate and to
+                    redirect to the HTTPS URL if desired. You can now test this immediately by loading up your site on
+                    the https:// domain.
+                </p>
+                <p>
+                    For more information about LetsEncrypt with Apache checkout the official documentation on the
+                    LetsEncrypt website: <a
+                        target="_blank"
+                        href="https://letsencrypt.readthedocs.io/en/latest/using.html#apache" rel="noreferrer">
+                    https://letsencrypt.readthedocs.io/en/latest/using.html#apache</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Renewing SSL Certificates For Apache</h2>
+
+                <p>
+                    To renew certificates at any time, you may run the following command:
+                </p>
+
+                <pre class="box"><code class="language-bash">sudo certbot renew --apache</code></pre>
+
+                <p>
+                    This will take you through the manual steps of renewal. LetsEncrypt will only allow renewal when the
+                    certificate is within 30 days of expiry. Once renewed the new certificate will be valid for 90 days
+                    from the date of renewal.
+                </p>
+                <p>
+                    Renewing the certificate in this manner will not require you to stop and start Apache so that the
+                    config is reloaded on a successful renewal allowing visitors to the site to automatically be
+                    served the new certificate.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Automating The SSL Certificate Renewal For Apache</h2>
+
+                <p>
+                    Finally, the most important step of this process, is to allow the certificate to auto renew, so that
+                    you as a server admin or not don't have to log in to the server to renew all your certs.
+                </p>
+
+                <p>
+                    The renewal is run by cron. You should find a cronfile that was automatically added on installation
+                    to /etc/cron.d/certbot. If the file is not there you can create it.
+                </p>
+
+                <p>
+                    Update the content of the cron file as follows:
+                </p>
+
+
+                <pre class="line-numbers box"><code class="language-bash">SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+0 */12 * * * root certbot -q renew --apache</code></pre>
+
+                <p>
+                    This will run the renew process twice daily, exactly as above when you ran it manually. The -q flag
+                    is provided to prevent any output being logged.
+                </p>
+                <p>
+                    So there you have it, auto renewing LetsEncrypt certificates running on Apache.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

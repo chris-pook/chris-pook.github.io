@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="A tutorial for configuring custom 503 error pages and 404 pages in Nginx and Apache"/>
+    <meta name="keywords" content="nginx apache custom error 404 configuration"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title" content="Custom Maintenance, Error and 404 Pages // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>Custom Maintenance, Error and 404 Pages // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">Custom Error and Maintenance Pages for Nginx and
+                    Apache</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">Use Custom Error Pages For Your Maintenance and Down Time</h3>
+                <p class="is-italic sp-top10">- Chris Pook, 21st November 2017</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="quote fw300">
+                    <blockquote>
+                        <p>
+                            Ensure you promote a customer facing message even during maintenance or unexpected down time.
+                        </p>
+                        <footer>
+                            Chris Pook
+                            <cite title="Source Title">
+                                Absolute Commerce
+                            </cite>
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    In the modern era of ecommerce, a site outage can have a serious monetary loss
+                    associated; not to mention putting a dent in your brand and customer's trust.
+                </p>
+                <p>
+                    Site outages can happen for any number of reasons, from scheduled maintenance to
+                    unexpected errors out of your control. The method below provides a clean way to mitigate these
+                    potential losses by still serving the end user a functional web page explaining the situation and
+                    even offering a call to action to retain the engagement.
+                </p>
+                <p>
+                    Usually the cause of a site outage comes from a low level application error. There are
+                    an infinite number
+                    of ways this can happen, for instance a failed deploy; deployment of untested bad code; failure of a
+                    third-party service or plain old lack of server resources. So next time you encounter a disk full
+                    scenario or the database goes offline, ensure your site stays "up" with the following instructions
+                    for <a href="#nginx-custom-errors">Nginx</a> and <a href="#apache-custom-errors">Apache</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="nginx-custom-errors" class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Nginx Custom Error Config</h2>
+
+                <p>
+                    By adding the following to your site's Nginx virtual host configuration, a custom page may be
+                    displayed for any given error code. Without this in place your users will be met with the standard
+                    Nginx error page, or worse potentially a stream of error output from your application. On a standard
+                    setup you should find the virtual host to add this config in the <span class="has-background-white-ter">/etc/nginx/sites/enabled</span> directory,
+                    although this may vary dependent on setup.
+                </p>
+
+                <pre class="line-numbers box"><code class="language-nginx">server {
+    ...
+    fastcgi_intercept_errors on;
+    error_page 500 501 502 503 504 /error-50x.html;
+    set $error_root $document_root;
+
+    location ~ ^/error-.*$ {
+        internal;
+        root $error_root/errors;
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section  class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">How does this work?</h2>
+                <p>
+                    The first line is required to tell Nginx that response codes greater than or equal to 300 should be redirected to Nginx for processing with the error_page directive (<a href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_intercept_errors" target="_blank" rel="noreferrer">Nginx cfastcgi_intercept_errors documentation</a>).
+                </p>
+                <pre class="line-numbers box" data-start="3"><code class="language-nginx">fastcgi_intercept_errors on;</code></pre>
+
+                <p>
+                    Then the error_page directive specifies the actual page you wish the user to be served with for a given HTTP
+                    response code. You may add multiple error_page directives to specify separate pages for each code or
+                    group them to a generic page as above. Be aware that the page the user is met with should not rely on
+                    any dynamic content, as the site is down you are looking to inform the user of the situation and if
+                    possible capture their data, see <a href="#custom-error-content">below</a> for ideas for this. (<a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#error_page" target="_blank">Nginx
+                    error_page documentation</a>).
+                </p>
+                <pre class="line-numbers box" data-start="4"><code class="language-nginx">error_page 500 501 502 503 504 /error-50x.html;</code></pre>
+
+                <p>
+                    This next line is required to facilitate the section below which specifies where the error pages are on the server. As the Nginx root directive cannot use the $document_root variable directly, this just makes a copy of it's value which can be used.
+                </p>
+                <pre class="line-numbers box" data-start="5"><code class="language-nginx">set $error_root $document_root;</code></pre>
+
+                <p>
+                Finally this block specifies that for any page request fitting the the error-* pattern, look in the web root errors directory. You may want to use different naming here if there is any likelihood your application has URLs beginning with 'error-'. This URL wont be visible to the user so it can be named whatever you want. The error page content will show on the URL the user requested.
+                </p>
+                <pre class="line-numbers box" data-start="6"><code class="language-nginx">location ~ ^/error-.*$ {
+    internal;
+    root $error_root/errors;
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="apache-custom-errors" class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Apache Custom Error Config</h2>
+
+                <p>
+                    The Apache web server has the exact same functionality available as Nginx with the following config added to your virtual host:
+                    although this may vary dependent on setup.
+                </p>
+
+                <pre class="line-numbers box"><code class="language-nginx">ErrorDocument 500 /errors/error-50x.html
+ErrorDocument 502 /errors/error-50x.html
+ErrorDocument 503 /errors/error-50x.html
+ErrorDocument 504 /errors/error-50x.html</code></pre>
+
+                <p>
+                    This simply specifies the page to load upon encountering the relevant HTTP codes (<a href="https://httpd.apache.org/docs/2.4/custom-error.html" target="_blank" rel="noreferrer">Apache ErrorDocument
+                    documentation</a>).
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    So with the above server configuration in place you are now covered for any 50x application error. You can also at any time reliably put your application in to maintenance mode (returning a 503 "Service unavailable" response) and the site will serve your custom content until the service comes back up.
+                </p>
+                <p>
+                    The errors directory is in your web root folder so can be managed as part of your application version control. One other thing to note is that any assets such as images you render on the error page will load relative to the root directory, not the errors directory. Always test your error page after setup, ideally in a UAT environment.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">What To Put On Your Error Page ?</h2>
+                <p>
+                    We suggest keeping the content of your error page simple and to the point. Offer the user an explanation for why they can't access what they were expecting. Something along the lines of "Please bear with us during a period of maintenance".
+                </p>
+                <p>
+                    Ensure you don't include anything on the page which relies on services that may be the cause of the outage (PHP, databases etc). If you did want to add dynamic content you can obviously still use javascript and action things on the front-end. This might include submitting a form via javascript to capture email addresses in an external system for which you can later send out an apology and potentially a good will discount code.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Handling 404 Page Not Found</h2>
+                <p>
+                    This exact same mechanism can be used to load a custom 404 page if your application is not already doing so. This is much better for user experience than just serving a blank server error page, we'd suggest linking to your best content from here.
+                </p>
+                <h3 class="fontalt4 lp5">Nginx Custom 404 Config</h3>
+                <pre class="line-numbers box"><code class="language-nginx">error_page 404 /error-404.html;</code></pre>
+
+                <h3 class="fontalt4 lp5">Apache Custom 404 Config</h3>
+                <pre class="line-numbers box"><code class="language-nginx">ErrorDocument 404 /errors/error-404.html</code></pre>
+                <p>
+                    Don't forget to add the custom page to your errors directory so that it is there to serve.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

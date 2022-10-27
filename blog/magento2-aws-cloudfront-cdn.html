@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+
+    <meta charset="utf-8"/>
+    <meta content="A tutorial for configuring Amazon AWS Cloudfront CDN for your Magento website." name="description"/>
+    <meta content="Amazon, AWS, Cloudfront, CDN, Magento 2" name="keywords"/>
+    <meta content="INDEX,FOLLOW" name="robots"/>
+    <meta content="Configure Amazon AWS Cloudfront CDN for Magento 2 // Absolute Commerce" name="title"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="Absolute Commerce Ltd." name="author"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=5" name="viewport"/>
+    <meta content="#3367D6" name="theme-color"/>
+    <link href="/manifest.json" rel="manifest"/>
+    <link href="ios-icon.png" rel="apple-touch-icon">
+    <link href="/icon.png" rel="icon" type="image/x-icon"/>
+    <title>Configure Amazon AWS Cloudfront CDN for Magento 2 // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-7">
+                <h1 class="lp1 fontalt4 sm-bottom20 with-line">Configure AWS Cloudfront CDN for Magento 2</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">A tutorial for integrating a solid CDN with Magento2</h3>
+                <p class="is-italic sp-top10">- Joseph McDermott, 25th February 2018</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    This tutorial will cover all of the steps required to get Amazon AWS CloudFront CDN up and running
+                    with your Magento 2 website. We will also cover CDN Cache Busting to ensure you can quickly get the
+                    latest version of your content to your customers, without having to manually flush CDN cache or wait
+                    for the assets to expire.
+                </p>
+                <p class=" text-italic">
+                    Note this tutorial applies to both Magento 1.x and Magento 2.x in both Community CE and Enterprise
+                    EE versions.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="content">
+                    <h2 class="hs1 fontalt4 lp5">The Sales Pitch</h2>
+                </div>
+                <p>
+                    First, an obligatory sales pitch. Absolute Commerce offer as a service and can set up your CDN with
+                    Magento2 for you. If you don't feel like doing this yourself or are concerned you maybe in over your
+                    head, please <a href="/contact" target="_blank">get in touch for a quotation</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="content">
+                    <h2 class="hs1 fontalt4 lp5">What you will need</h2>
+                </div>
+                <p>
+                    The first thing you will need is an Amazon AWS account. If you don't have one, click this link to <a
+                        href="https://aws.amazon.com/" rel="noreferrer" target="_blank">register for free with Amazon
+                    Web Services</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">CDN Domain Options</h2>
+                <p>
+                    There are two choices for serving your assets via CloudFront:
+                </p>
+                <ul>
+                    <li>CloudFront Domain: all assets will be served by Magento as xxx.cloudfront.net</li>
+                    <li>Custom Domain: assets can instead be served by Magento as media.yourdomain.com and
+                        static.yourdomain.com
+                    </li>
+                </ul>
+                <p>
+                    There are some limitations on the latter and it requires a little more configuration, but generally
+                    speaking it is the recommended option.
+                </p>
+                <p>
+                    If you opt for the CloudFront domain, please proceed to the 'AWS CloudFront' section.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">AWS ACM SSL Certificate</h2>
+                <p>
+                    To serve HTTPS assets via your Custom Domain you will need an AWS Certificate. Navigate to Services
+                    > Certificate Manager.
+                </p>
+                <p>
+                    Important: you must change your location to US East (N. Virginia), which can be done by selecting
+                    the location dropdown in the top right of the screen. Only certificates registered in this location
+                    can be used with CloudFront.
+                </p>
+                <p>
+                    Click the button 'Request a Certificate' and enter your three domains: the primary, static and media
+                    (the primary domain is not actually required, but makes the UI easier to understand later when
+                    selecting your certificate), eg.
+                </p>
+
+                <ul>
+                    <li>absolutecommerce.co.uk</li>
+                    <li>static.absolutecommerce.co.uk</li>
+                    <li>media.absolutecommerce.co.uk</li>
+                </ul>
+                <p>
+                    When you click the 'Review and request' button and then the subsequent 'Confirm and request' button
+                    an email will be attempted to a number of emails, eg. postmaster@yourdomain.co.uk.
+                </p>
+                <p>
+                    You must open each of the emails received and click the link included to confirm that you are the
+                    owner of the domain name.
+                </p>
+                <p>
+                    Once the above is complete, navigate once again to Services > Certificate Manager and you should now
+                    have a certificate with Status 'Issued'. This certificate is now ready for use with CloudFront.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">AWS CloudFront</h2>
+                <p>
+                    Once logged in to your AWS account, navigate to Services > CloudFront. Click the button that says
+                    'Create Distribution' and then on the next page, click the 'Get Started' button under the 'Web'
+                    section.
+                </p>
+                <p>
+                    There are a number of ways to configure your CDN and you are free to explore these once up and
+                    running. For the sake of this tutorial we will stick mostly to the defaults, so if an option is not
+                    mentioned below you can leave it as-is:
+                </p>
+                <ul>
+                    <li>Origin Domain Name: this is the domain of your Magento website, eg. absolutecommerce.co.uk</li>
+                    <li>Origin Protocol Policy: Match Viewer</li>
+                    <li>Default Root Object: enter the path to your company logo, eg.
+                        /static/frontend/Absolute/website/en_GB/images/absolute-commerce.png
+                    </li>
+                </ul>
+                <p>
+                    If you want to use your own sub-domains for the CDN then there are a few more values to complete:
+                </p>
+                <ul>
+                    <li>Alternate Domain Names (CNAMEs): we need a value for static and media content, eg.
+                        static.absolutecommerce.co.uk, media.absolutecommerce.co.uk
+                    </li>
+                    <li>SSL Certificate: select the certificate you created in the previous step</li>
+                </ul>
+                <p>
+                    When you are finished, click on the 'Create Distribution' button at the bottom. AWS will now take
+                    some time to fully provision your CDN Distribution, it can take a couple of hours.
+                </p>
+
+                <p>
+                    If you return to the 'CloudFront Distributions' screen you will see the Status of your Distribution,
+                    which will be 'In Progress'. When this becomes 'Deployed' it is ready for use.
+                </p>
+                <p class=" text-italic">
+                    Note: if you attempt to access CDN data via an HTTPS link on a custom domain before the Status is
+                    'Deployed', you will likely see an Untrusted SSL Certificate warning. Please wait until your
+                    Distribution is 'Deployed' and try again.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Custom domain DNS</h2>
+                <p>
+                    This section can be skipped if you opted for the CloudFront Domain in the CDN Domain Options
+                    section.
+                </p>
+                <p>
+                    Take a look at your new Distribution and you should see you now have a CDN URL that will
+                    look something like xxx.cloudfront.net. Take a note of this value. Open up the DNS management tool
+                    and
+                    add two new CNAME records for media.yourdomain.com and
+                    static.yourdomain.com to point at your xxx.cloudfront.net value. This may take a short while to
+                    propagate depending on your DNS provider.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">The waiting game...</h2>
+                <p>
+                    If you selected CloudFront Domain for your CDN Domain Option then you can skip this step.
+                </p>
+                <p>
+                    There may be a short time where you are waiting for your CDN Distribution and/or DNS propagation, so
+                    don't change anything in Magento just yet as the website may appear OK to you but not to others in
+                    different locations.
+                </p>
+                <p>
+                    The best way to check whether everything is ready or not is to try accessing your
+                    https://media.yourdomain.com until you see your logo and no security warnings. We'd recommend
+                    waiting at least an hour before proceeding.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Access-Control-Allow-Origin</h2>
+                <p>
+                    Since your assets, such as fonts or JavaScript files, are going to be served from a third party domain, you need to 'allow' 'access' to that asset from your website 'origin'. This is quite simple and involves adding a rule to your nginx or apache configuration:
+                </p>
+                <p class="box">Access-Control-Allow-Origin: '*'</p>
+                <p>
+                    This will allow the CDN to access your assets and avoid any errors in your console, missing fonts, styles, etc.
+                </p>
+                <p>
+                    Please see our <a href="/blog/cors-in-magento-2">CORS in Magento 2 article</a> for further information about configuring Access-Control-Allow-Origin.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">Magento System Configuration</h2>
+                <p>
+                    The next step is to update your Magento system configuration to point at the new CDN URLs.
+                </p>
+                <p class=" text-italic">
+                    Note: it is a good idea to test this using only media URLs first and check for any unexpected results on the frontend. Changing the static URL will effect JavaScript and CSS, making it more difficult to revert any changes.
+                </p>
+                <h3 class="fontalt4 lp5">Magento 1.x</h3>
+                <p>
+                    Login to Magento and navigate to System > Configuration > Web.
+                </p>
+                <h4 class="hs1 fontalt4 lp5">CloudFront Domain:</h4>
+                <ul>
+                    <li>Unsecure &gt; Base Skin URL: http://xxx.cloudfront.net/skin/</li>
+                    <li>Unsecure &gt; Base Media URL: http://xxx.cloudfront.net/media/</li>
+                    <li>Unsecure &gt; Base JavaScript URL: http://xxx.cloudfront.net/js/</li>
+                    <li>Secure &gt; Base Skin URL: https://xxx.cloudfront.net/skin/</li>
+                    <li>Secure &gt; Base Media URL: https://xxx.cloudfront.net/media/</li>
+                    <li>Secure &gt; Base JavaScript URL: https://xxx.cloudfront.net/js/</li>
+                </ul>
+                <h4 class="hs1 fontalt4 lp5">Custom  Domain:</h4>
+                <ul>
+                    <li>Unsecure &gt; Base Skin URL: http://static.yourdomain.com/skin/</li>
+                    <li>Unsecure &gt; Base Media URL: http://media.yourdomain.com/media/</li>
+                    <li>Unsecure &gt; Base JavaScript URL: http://static.yourdomain.com/js/</li>
+                    <li>Secure &gt; Base Skin URL: https://static.yourdomain.com/skin/</li>
+                    <li>Secure &gt; Base Media URL: https://media.yourdomain.com/media/</li>
+                    <li>Secure &gt; Base JavaScript URL: https://static.yourdomain.com/js/</li>
+                </ul>
+                <h3 class="fontalt4 lp5">Magento 2.x</h3>
+                <p>
+                    Login to Magento and navigate to Stores > Settings > Configuration > Web, and update the following fields:
+                </p>
+                <h4 class="hs1 fontalt4 lp5">CloudFront Domain:</h4>
+                <ul>
+                    <li>Base Urls &gt; Base URL for Static View Files: http://xxx.cloudfront.net/static/</li>
+                    <li>Base Urls &gt; Base URL for User Media Files: http://xxx.cloudfront.net/media/</li>
+                    <li>Base Urls (Secure) &gt; Base URL for Static View Files: https://xxx.cloudfront.net/static/</li>
+                    <li>Base Urls (Secure) &gt; Base URL for User Media Files: https://xxx.cloudfront.net/media/</li>
+                </ul>
+                <h4 class="hs1 fontalt4 lp5">Custom  Domain:</h4>
+                <ul>
+                    <li>Base Urls &gt; Base URL for Static View Files: http://static.yourdomain.com/static/</li>
+                    <li>Base Urls &gt; Base URL for User Media Files: http://media.yourdomain.com/media/</li>
+                    <li>Base Urls (Secure) &gt; Base URL for Static View Files: https://static.yourdomain.com/static/</li>
+                    <li>Base Urls (Secure) &gt; Base URL for User Media Files: https://media.yourdomain.com/media/</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5">We're here to help!</h2>
+                <p>
+                    As always if you need some assistance or would like us to do this for you, please please get in touch.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img alt="pen icon" src="/images/pen.png"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img alt="location icon" src="/images/location.png"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>

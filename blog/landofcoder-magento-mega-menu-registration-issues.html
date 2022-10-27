@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88029907-1"></script>
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="Solving an issue with registering LandOfCoder's Ves Mega Menu Pro Magento2 module"/>
+    <meta name="keywords" content="LandOfCoder, Ves, Magento 2, Mega menu, registration, invalid"/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="title" content="LandOfCoder module registration issue fix // Absolute Commerce"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="author" content="Absolute Commerce Ltd."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5"/>
+    <meta name="theme-color" content="#3367D6"/>
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="apple-touch-icon" href="ios-icon.png">
+    <link rel="icon" type="image/x-icon" href="/icon.png"/>
+    <title>LandOfCoder module registration issue fix // Absolute Commerce</title>
+    <style>
+        a {
+            color: #ffffff;
+        }
+
+        .loading-wrap {
+            opacity: 1;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url(/images/logo.png) no-repeat fixed center;
+            background-color: #ffffff;
+        }
+
+    </style>
+    <noscript>
+        <!-- load css immediately for no js users -->
+        <link rel="stylesheet" href="/css/main.css?v=20200131">
+    </noscript>
+</head>
+
+<body>
+<div class="loading-wrap"></div>
+<nav id="mainNavbar" class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item logo" href="/" aria-label="Back to the Absolute Commerce homepage">
+            <img src="/images/logo.png" alt="Absolute Commerce Logo" width="118" height="17">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample"
+           onclick="document.querySelector('.navbar-menu').classList.toggle('is-active');">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div class="navbar-menu">
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a href="/services" class="navbar-link">
+                    What We Do
+                </a>
+                <div class="navbar-dropdown is-right">
+                    <a href="/services/retailers" class="navbar-item">
+                        For Retailers
+                    </a>
+                    <a href="/services/agencies" class="navbar-item">
+                        For Agencies
+                    </a>
+                    <a href="/services/developers" class="navbar-item">
+                        For Developers
+                        </a>
+                        <a href="/services/maintenance" class="navbar-item">
+                            Magento Maintenance
+                        </a>
+                </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-link">
+                    Case Studies
+                </div>
+                <div class="navbar-dropdown is-right">
+                    <a href="/case-studies/harvey-nichols-fenty-by-rihanna-product-launch" class="navbar-item">
+                        Harvey Nichols
+                    </a>
+                    <a href="/case-studies/susie-watson-designs-migration-to-magento-2" class="navbar-item">
+                        Susie Watson Designs
+                    </a>
+                    <a href="/case-studies/dinopc-magento2-migration" class="navbar-item">
+                        DinoPC
+                    </a>
+                    <a href="/case-studies/curtains-com" class="navbar-item">
+                        Curtains.com
+                    </a>
+                </div>
+            </div>
+            <a href="/extensions" class="navbar-item">
+                Extensions
+            </a>
+            <a href="/blog" class="navbar-item">
+                Blog
+            </a>
+            <a href="/contact" class="navbar-item">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section black-section sp-top-bottom80">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-8">
+                <h1 class="lp1 fontalt4 sm-bottom20  with-line">Land Of Coder module registration issue fix</h1>
+                <h3 class="hs1 fw300 fontalt4 lp2">Registering a module when the vendor's code is broken</h3>
+                <p class="is-italic sp-top10">- Chris Pook, 02nd October 2019</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5 sm-bottom20">The problem</h2>
+                <p>
+                    Recently a client of ours asked us to install a third party Mega Menu module by LandOfCoder on their
+                    site. In doing so we encountered an issue with the vendor's custom registration code which meant the
+                    module cannot be registered. Despite entering a valid code and saving the config we were still met
+                    with an "invalid" status message.
+                </p>
+            </div>
+        </div>
+        <div class="text-center">
+            <img src="/images/blog/landofcoder-status-invalid.png" alt="Land of coder mega menu module status invalid"/>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5 sm-bottom20">The solution</h2>
+                <p>
+                    The vendor requested FTP access (as is usually the way nowadays with Magento vendors). Instead of
+                    giving access and waiting for a resolution, we ran through the code and discovered that the hook for
+                    saving the licence key in the standard Magento core config data was not triggering due to it hooking
+                    in to a non-existent event. This meant that subsequent checks of the licence against the LandOfCoder
+                    remote licence server were failing as there was no licence saved in the config to check.
+                </p>
+                <p>
+                    To get the module to register we realised all that is needed is to add the relevant entry in the
+                    core_config_data table, the rest is then picked up by the working remote check element of the
+                    module.
+                </p>
+                <p>
+                    The MySql insert to do so is as follows:
+                </p>
+                <pre class="box"><code class="language-sql">INSERT INTO `core_config_data`
+    (`scope`, `scope_id`, `path`, `value`)
+VALUES
+    ('default', '0', 'veslicense/general/vesmegamneupro', 'aaaaa-bbbbb-ccccc-ddddd-eeeee'),
+    ('default', '0', 'loflicense/general/vesmegamneupro', 'aaaaa-bbbbb-ccccc-ddddd-eeeee');
+</code></pre>
+                <p>
+                    Note there are two entries, one for loflicense and one for veslicense. This same process would be
+                    applicable for other LandOfCoder modules, you'd just need to update the module name in the path. The
+                    required string can be found by inspecting the config input in the Magento admin panel looking for
+                    the relevant <span class="fw300">name="groups[general][fields][vesmegamneupro][value]</span> entry.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section white-section">
+    <div class="container content">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <h2 class="hs1 fontalt4 lp5 sm-bottom20">The result</h2>
+                <p>
+                    After updating the config as above a quick flush of the config cache and reload of the admin page gave us this:
+                </p>
+            </div>
+        </div>
+        <div class="text-center sp-bottom20">
+            <img src="/images/blog/landofcoder-status-valid.png" alt="Land of coder mega menu module status valid"/>
+        </div>
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <p>
+                    Hopefully this post might help you out if you're encountering the same issue.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section black-section sp-top-bottom70">
+    <div class="container text-center">
+        <div class="columns is-centered">
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="56" height="58" src="/images/pen.png" alt="pen icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Write <strong>us</strong></h3>
+                    <p><a href="/contact" title="Contact Us">Go to contact page</a></p>
+                </div>
+            </div>
+            <div class="column is-5">
+                <div class="about-icon">
+                    <img width="41" height="61" src="/images/location.png" alt="location icon"></img>
+                </div>
+                <div class="about-content text-left">
+                    <h3 class="fontalt4 hs2  lp1">Visit <strong>us</strong></h3>
+                    <address>
+    Mainyard Studios<br/>
+    35 Bow Rd, London E3 2AD
+</address>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section grey-section footer sp-top-bottom70">
+    <div class="container text-center">
+        <div class="footer-cr fw900 text-center">
+            <a href="/terms-and-conditions" title="Click to view our terms and conditions">&copy; Absolute Commerce 2021</a>
+        </div>
+    </div>
+</section>
+
+<div id="cookie-consent">
+    <div class="cookie-consent-title hs2 fontalt4 fw600 lp2">Cookies.</div>
+    <div class="cookie-consent-desc"><p>
+        We use cookies to enhance your experience on our site. Please click "Accept" below to agree to our use of cookies.
+        <a href="/terms-and-conditions#cookies" target="_blank">Terms</a></p></div>
+    <div id="cookie-consent-button" class="cookie-consent-button hs2 fontalt4 fw600 lp2">Accept</div>
+</div>
+
+<script defer src="/js/main.js?v=20200304-1"></script>
+</body>
+</html>
