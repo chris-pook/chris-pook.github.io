@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gym Exercise Guide</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f3f5f7;
+        color: #263238;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: auto;
+        padding: 16px;
+    }
+
+    header {
+        background: #172b3a;
+        color: white;
+        padding: 24px 18px;
+        border-radius: 14px;
+        margin-bottom: 18px;
+    }
+
+    header h1 {
+        margin: 0 0 6px;
+        font-size: 26px;
+    }
+
+    header p {
+        margin: 0;
+        color: #cbd5dc;
+        font-size: 14px;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 190px;
+        background: #dce3e8;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #657782;
+        margin-bottom: 20px;
+        border: 2px dashed #aab7c0;
+        overflow: hidden;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .intro {
+        background: white;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        font-size: 14px;
+    }
+
+    .category {
+        background: white;
+        border-radius: 12px;
+        padding: 17px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .category h2 {
+        font-size: 19px;
+        color: #172b3a;
+        margin: 0 0 12px;
+        padding-bottom: 9px;
+        border-bottom: 2px solid #e9eff1;
+    }
+
+    .exercise-list {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .exercise {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        color: #263238;
+        background: #f6f8f9;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+
+    .exercise:active {
+        background: #e4efed;
+    }
+
+    .exercise-name {
+        font-weight: 600;
+    }
+
+    .exercise-description {
+        display: block;
+        color: #78858c;
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+    .arrow {
+        color: #287c71;
+        font-size: 20px;
+        margin-left: 8px;
+    }
+
+    .count {
+        display: inline-block;
+        background: #e9f5f2;
+        color: #287c71;
+        border-radius: 20px;
+        padding: 3px 9px;
+        font-size: 11px;
+        margin-left: 7px;
+    }
+
+    .footer {
+        text-align: center;
+        color: #78858c;
+        font-size: 12px;
+        padding: 16px 10px;
+    }
+
+    @media (hover: hover) {
+        .exercise:hover {
+            background: #e9f5f2;
+        }
+    }
+
+    @media (max-width: 380px) {
+        header h1 {
+            font-size: 23px;
+        }
+
+        .category {
+            padding: 14px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="intro">
+        <strong>Welcome to the exercise library.</strong>
+        <p>
+            Browse popular gym exercises, organised by
+            muscle group and movement type. Select an exercise
+            to view its technique guide, best practices,
+            common mistakes and safety advice.
+        </p>
+        <strong>30 exercises · 6 categories</strong>
+    </div>
+
+    <!-- CHEST -->
+    <section class="category">
+        <h2>🏋️ Chest exercises</h2>
+
+        <div class="exercise-list">
+
+            <a class="exercise" href="barbell-bench-press.html">
+                <span>
+                    <span class="exercise-name">Barbell Bench Press</span>
+                    <span class="exercise-description">Chest strength and development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="incline-dumbbell-press.html">
+                <span>
+                    <span class="exercise-name">Incline Dumbbell Press</span>
+                    <span class="exercise-description">Upper chest development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="dumbbell-chest-fly.html">
+                <span>
+                    <span class="exercise-name">Dumbbell Chest Fly</span>
+                    <span class="exercise-description">Chest isolation</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="cable-chest-fly.html">
+                <span>
+                    <span class="exercise-name">Cable Chest Fly</span>
+                    <span class="exercise-description">Controlled chest contraction</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="push-up.html">
+                <span>
+                    <span class="exercise-name">Push-Up</span>
+                    <span class="exercise-description">Bodyweight chest exercise</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- BACK -->
+    <section class="category">
+        <h2>💪 Back exercises</h2>
+
+        <div class="exercise-list">
+
+            <a class="exercise" href="barbell-bent-over-row.html">
+                <span>
+                    <span class="exercise-name">Barbell Bent Over Row</span>
+                    <span class="exercise-description">Back thickness and strength</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="lat-pulldown.html">
+                <span>
+                    <span class="exercise-name">Lat Pulldown</span>
+                    <span class="exercise-description">Lat development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="seated-cable-row.html">
+                <span>
+                    <span class="exercise-name">Seated Cable Row</span>
+                    <span class="exercise-description">Mid-back development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="pull-up.html">
+                <span>
+                    <span class="exercise-name">Pull-Up</span>
+                    <span class="exercise-description">Bodyweight back strength</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="single-arm-dumbbell-row.html">
+                <span>
+                    <span class="exercise-name">Single Arm Dumbbell Row</span>
+                    <span class="exercise-description">Unilateral back training</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- SHOULDERS -->
+    <section class="category">
+        <h2>🎯 Shoulder exercises</h2>
+
+        <div class="exercise-list">
+
+            <a class="exercise" href="seated-dumbbell-shoulder-press.html">
+                <span>
+                    <span class="exercise-name">Seated Dumbbell Shoulder Press</span>
+                    <span class="exercise-description">Overall shoulder strength</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="dumbbell-lateral-raise.html">
+                <span>
+                    <span class="exercise-name">Dumbbell Lateral Raise</span>
+                    <span class="exercise-description">Side deltoid development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="dumbbell-front-raise.html">
+                <span>
+                    <span class="exercise-name">Dumbbell Front Raise</span>
+                    <span class="exercise-description">Front deltoid isolation</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="reverse-cable-fly.html">
+                <span>
+                    <span class="exercise-name">Reverse Cable Fly</span>
+                    <span class="exercise-description">Rear shoulder development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="barbell-overhead-press.html">
+                <span>
+                    <span class="exercise-name">Barbell Overhead Press</span>
+                    <span class="exercise-description">Compound shoulder strength</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ARMS -->
+    <section class="category">
+        <h2>💪 Arm exercises</h2>
+
+        <div class="exercise-list">
+
+            <a class="exercise" href="barbell-bicep-curl.html">
+                <span>
+                    <span class="exercise-name">Barbell Bicep Curl</span>
+                    <span class="exercise-description">Bicep strength and size</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="dumbbell-hammer-curl.html">
+                <span>
+                    <span class="exercise-name">Dumbbell Hammer Curl</span>
+                    <span class="exercise-description">Biceps and brachialis</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="cable-tricep-pushdown.html">
+                <span>
+                    <span class="exercise-name">Cable Tricep Pushdown</span>
+                    <span class="exercise-description">Tricep isolation</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="overhead-tricep-extension.html">
+                <span>
+                    <span class="exercise-name">Overhead Tricep Extension</span>
+                    <span class="exercise-description">Tricep long head development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="preacher-curl.html">
+                <span>
+                    <span class="exercise-name">Preacher Curl</span>
+                    <span class="exercise-description">Supported bicep isolation</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- LEGS -->
+    <section class="category">
+        <h2>🦵 Leg exercises</h2>
+
+        <div class="exercise-list">
+
+            <a class="exercise" href="barbell-back-squat.html">
+                <span>
+                    <span class="exercise-name">Barbell Back Squat</span>
+                    <span class="exercise-description">Compound leg strength</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="leg-press.html">
+                <span>
+                    <span class="exercise-name">Leg Press</span>
+                    <span class="exercise-description">Quadriceps and glutes</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="romanian-deadlift.html">
+                <span>
+                    <span class="exercise-name">Romanian Deadlift</span>
+                    <span class="exercise-description">Hamstrings and glutes</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="leg-extension.html">
+                <span>
+                    <span class="exercise-name">Leg Extension</span>
+                    <span class="exercise-description">Quadriceps isolation</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="lying-leg-curl.html">
+                <span>
+                    <span class="exercise-name">Lying Leg Curl</span>
+                    <span class="exercise-description">Hamstring isolation</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="standing-calf-raise.html">
+                <span>
+                    <span class="exercise-name">Standing Calf Raise</span>
+                    <span class="exercise-description">Calf development</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- CORE -->
+    <section class="category">
+        <h2>🔥 Core & Abs exercises</h2>
+
+        <div class="exercise-list">
+
+            <a class="exercise" href="plank.html">
+                <span>
+                    <span class="exercise-name">Plank</span>
+                    <span class="exercise-description">Core stability and endurance</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="hanging-leg-raise.html">
+                <span>
+                    <span class="exercise-name">Hanging Leg Raise</span>
+                    <span class="exercise-description">Abdominal strength</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="cable-crunch.html">
+                <span>
+                    <span class="exercise-name">Cable Crunch</span>
+                    <span class="exercise-description">Weighted abdominal training</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+            <a class="exercise" href="russian-twist.html">
+                <span>
+                    <span class="exercise-name">Russian Twist</span>
+                    <span class="exercise-description">Rotational core training</span>
+                </span>
+                <span class="arrow">›</span>
+            </a>
+
+        </div>
+    </section>
+
+    <div class="footer">
+        Gym Exercise Guide<br>
+        30 exercises · 6 training categories<br>
+        Focus on technique · Train safely · Progress consistently
+    </div>
+
+</div>
+
+</body>
+</html>
